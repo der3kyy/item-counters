@@ -1,0 +1,118 @@
+# Command replies. {player} is the player's name; {usage} comes from usage below.
+messages:
+  no-permission: "\n &cYou do not have permission to use this command!\n"
+  syntax: "\n &cInvalid command! &fUse /counter help.\n"
+  player-required: "\n &cSpecify a player when running this command from the console! &f{usage}\n"
+  player-not-found: "\n &cPlayer &f{player} &cis not online!\n"
+  missing-player: "\n &cSpecify a player! &f{usage}\n"
+  missing-stat: "\n &cSpecify the counter stat! &f{usage}\n"
+  missing-value: "\n &cSpecify a numeric value! &f{usage}\n"
+  missing-category: "\n &cSpecify the leaderboard category! &f{usage}\n"
+  missing-period: "\n &cSpecify the leaderboard period! &f{usage}\n"
+  invalid-arguments: "\n &cInvalid command arguments! &f{usage}\n"
+  invalid-category: "\n &cUnknown leaderboard category! &f{usage}\n"
+  invalid-period: "\n &cUnknown leaderboard period! &f{usage}\n"
+  inventory-full: "\n &cThere is no room for a counter in &f{player}&c's inventory!\n"
+  given: "\n &3Gave a counter to &f{player}&3.\n"
+  received: "\n &3You received a counter. &fApply it to a tool, weapon or armor in an anvil.\n"
+  unsupported: "\n &cThis item is not supported! &fHold one supported item in your main hand.\n"
+  already-counted: "\n &cThis item already has a counter!\n"
+  no-counter: "\n &cThis item has no counter!\n"
+  applied: "\n &3Applied a counter to &f{player}&3's item.\n"
+  removed: "\n &3Removed the counter from &f{player}&3's item.\n"
+  edited: "\n &3Updated &f{player}&3's counter. Value: &f{value}&3.\n"
+  invalid-stat-value: "\n &cInvalid stat or number! &fValues must be nonnegative; total_kills is calculated automatically.\n"
+  invalid-page: "\n &cInvalid page number!\n"
+  reloaded: "\n &3Settings reloaded. &7(Storage file, periods, intervals and PAPI registration require a restart)\n"
+  reload-failed: "\n &cSettings reload failed! &fCheck the console; previous settings are still active.\n"
+# Argument hints: <...> is required; [...] is optional.
+# Item commands without [player] use the sender's main hand. Console use requires a player.
+# Do not translate command names.
+usage:
+  help: '/counter help'
+  give: '/counter give <player>'
+  apply: '/counter apply [player]'
+  remove: '/counter remove [player]'
+  inspect: '/counter inspect [player]'
+  set: '/counter set <stat> <value> [player]'
+  add: '/counter add <stat> <value> [player]'
+  subtract: '/counter subtract <stat> <value> [player]'
+  top: '/counter top <blocks|wood|kills|damage> <daily|weekly|alltime> [page]'
+  reload: '/counter reload'
+# Appearance of the item issued by /counter give. Material: config.yml → anvil.counter-material.
+counter-item:
+  name: '&3Counter'
+  lore:
+    - '&fFor a tool, weapon or armor.'
+    - '&7Apply in an anvil.'
+# /counter help. The admin section requires itemcounters.admin.
+help:
+  header: '&3Item counters'
+  public:
+    - '&f/counter help &7— help'
+    - '&f/counter top <blocks|wood|kills|damage> <daily|weekly|alltime> [page] &7— leaderboard'
+  admin:
+    - '&f/counter give <player> &7— give a counter item'
+    - '&f/counter apply [player] &7— apply a counter'
+    - '&f/counter remove [player] &7— remove a counter'
+    - '&f/counter inspect [player] &7— inspect item data'
+    - '&f/counter set|add|subtract <stat> <value> [player] &7— edit counters'
+    - '&f/counter reload &7— reload settings'
+# Item lore labels used by {label}, {mob_label}, {player_label} in config.yml → display.
+# kills is the combined total; mob_kills and player_kills are the separate weapon counters.
+# labels.kills is used when you include {label} in display.kills.lore.
+labels:
+  blocks: Blocks broken
+  wood: Wood broken
+  kills: Kills
+  mob_kills: Mobs killed
+  player_kills: Players killed
+  damage: Health lost
+# Units after numbers in /counter top and leaderboard ..._value placeholders.
+# labels.blocks produces "Blocks broken: 100" on the item; units.blocks produces "100 blocks" in rankings.
+# Damage is measured in hearts: 1 heart = 2 HP.
+units:
+  blocks: blocks
+  wood: wood blocks
+  kills: kills
+  damage: ❤ damage
+# Category names in /counter top headers; these do not change item lore.
+categories:
+  blocks: Blocks broken
+  wood: Wood
+  kills: Kills
+  damage: Health lost
+# Period names in leaderboard headers; boundaries are configured under leaderboards in config.yml.
+periods:
+  daily: today
+  weekly: this week
+  alltime: all time
+# /counter top format. value also formats leaderboard ..._value placeholders.
+# row: {position}, {player}, {value}; value: {value} (number), {unit} (from units).
+leaderboard:
+  header: '&3{category} &7— {period}, page {page}'
+  row: '&3{position}. &f{player} &7— &f{value}'
+  value: '{value} {unit}'
+  empty: '&7There are no players on this leaderboard page yet.'
+# /counter inspect lines for the target player's main-hand item.
+# {id} is the item's UUID; {type} is its category; {value} is its primary count.
+# Weapons: {mob_kills}, {player_kills}, {total_kills}. Armor: {damage} in hearts.
+inspect:
+  blocks:
+    - '&3Item held by &f{player}&3: &f{type}'
+    - '&3Blocks broken: &f{value}'
+    - '&7Item UUID: {id}'
+  wood:
+    - '&3Item held by &f{player}&3: &f{type}'
+    - '&3Wood broken: &f{value}'
+    - '&7Item UUID: {id}'
+  kills:
+    - '&3Item held by &f{player}&3: &f{type}'
+    - '&3Mobs killed: &f{mob_kills}'
+    - '&3Players killed: &f{player_kills}'
+    - '&3Total kills: &f{total_kills}'
+    - '&7Item UUID: {id}'
+  damage:
+    - '&3Item held by &f{player}&3: &f{type}'
+    - '&3Health lost: &f{damage} ❤'
+    - '&7Item UUID: {id}'

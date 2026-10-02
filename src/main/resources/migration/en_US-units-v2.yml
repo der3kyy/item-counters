@@ -1,0 +1,15 @@
+units:
+  blocks: blocks
+  wood: axe blocks
+  kills: kills
+  damage: ❤ damage
+  pickaxe: 'blocks with a pickaxe'
+  shovel: 'blocks with a shovel'
+  hoe: 'blocks with a hoe'
+  axe: 'blocks with an axe'
+  sword: 'sword kills'
+  mace: 'mace kills'
+  bow: 'bow kills'
+  crossbow: 'crossbow kills'
+  trident: 'trident kills'
+  armor: '❤ damage while armored'

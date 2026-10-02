@@ -1,0 +1,122 @@
+# RU: Версия схемы настроек; обновляется плагином, менять вручную не нужно.
+# EN: Settings schema version; updated by the plugin, do not edit manually.
+config-version: 2
+# RU: Язык сообщений. Переводы находятся в lang/<имя>.yml.
+# EN: Message language. Translations are stored in lang/<name>.yml.
+general:
+  language: ru_RU
+# RU: Наковальня: инструмент/оружие/броня слева, счётчик справа.
+# EN: Anvil: place the tool/weapon/armor on the left and the counter on the right.
+# RU: counter-material — материал счётчика, в том числе для /counter give.
+# EN: counter-material — counter item material, including items issued by /counter give.
+# RU: counter-glow — блеск зачарования у счётчика, false — выключен.
+# EN: counter-glow — counter enchantment glow; false disables it.
+# RU: Название и описание выдаваемого предмета: counter-item в языковом файле.
+# EN: Issued item name and lore: counter-item in the language file.
+# RU: level-cost — цена в уровнях опыта, 0 — бесплатно.
+# EN: level-cost — cost in experience levels; 0 means free.
+anvil:
+  enabled: true
+  counter-material: COMPASS
+  counter-glow: false
+  level-cost: 0
+# RU: Учитывать действия в Creative. В Spectator подсчёт всегда выключен.
+# EN: Count actions in Creative. Counting is always disabled in Spectator.
+counting:
+  creative: false
+# RU: Категории предметов: blocks — кирки/лопаты/мотыги, wood — топоры, kills — оружие, damage — броня.
+# EN: Item categories: blocks — pickaxes/shovels/hoes, wood — axes, kills — weapons, damage — armor.
+# RU: Тип сломанного блока не ограничивается.
+# EN: All broken block types count; there is no block whitelist.
+supported-items:
+  blocks: true
+  wood: true
+  kills: true
+  damage: true
+# RU: Сущности, убийства которых не считаются: имена EntityType и регулярные выражения.
+# EN: Entities whose kills do not count: EntityType names and regular expressions.
+# RU: Неверное правило пропускается с предупреждением в консоли.
+# EN: Invalid rules are skipped with a console warning.
+entity-exclusions:
+  types: [ARMOR_STAND]
+  patterns: ['.*BOAT', '.*MINECART', '.*DISPLAY', 'INTERACTION', 'ITEM', 'EXPERIENCE_ORB']
+# RU: Оформление чисел. Округляется только отображение; урон хранится в сердцах, 1 ❤ = 2 HP.
+# EN: Number formatting. Only displayed values are rounded; damage is stored in hearts, 1 ❤ = 2 HP.
+number-format:
+  thousands-separator: ' '
+  decimal-separator: '.'
+  damage-decimals: 1
+# RU: mixed — лучший результат каждого игрока по инструментам, сравнивается само число.
+# EN: mixed — each player's best tool result, compared by its raw number.
+# RU: Старые общие категории blocks/wood/kills/damage доступны отдельно.
+# EN: Legacy aggregate categories blocks/wood/kills/damage remain available separately.
+# RU: Рейтинги игроков. timezone: system — часовой пояс сервера; можно указать Europe/Kyiv.
+# EN: Player leaderboards. timezone: system uses the server timezone; Europe/Kyiv is also valid.
+# RU: После изменения timezone, week-start или refresh-ticks нужен перезапуск.
+# EN: Changing timezone, week-start or refresh-ticks requires a server restart.
+leaderboards:
+  timezone: system
+  week-start: MONDAY
+  default-category: kills
+  default-period: alltime
+  max-cached-top: 100
+  page-size: 10
+  refresh-ticks: 100
+  retention-daily-days: 31
+  retention-weekly-weeks: 8
+  empty-placeholder: '—'
+# RU: Хранение статистики: sqlite (локальный файл) или mysql (отдельная БД).
+# EN: Statistics storage: sqlite (local file) or mysql (separate database).
+# RU: Изменения подключения и интервала записи вступают в силу после перезапуска.
+# EN: Connection and flush interval changes take effect after a server restart.
+# RU: legacy-import — однократный импорт старого JSON в пустую SQL-базу; '' — отключить.
+# EN: legacy-import — one-time import of legacy JSON into an empty SQL database; '' disables it.
+# RU: При импорте исходный файл сохраняется, рядом создаётся резервная копия.
+# EN: Import preserves the source file and creates a backup beside it.
+storage:
+  type: sqlite
+  sqlite-file: counters.db
+  flush-seconds: 30
+  legacy-import: data.json
+  mysql:
+    host: localhost
+    port: 3306
+    database: itemcounters
+    username: itemcounters
+    password: ''
+    # RU: disable — без TLS; verify-full — проверять сертификат и имя сервера.
+    # EN: disable — no TLS; verify-full — verify the certificate and server hostname.
+    ssl-mode: disable
+# RU: Награды за достижения на отдельном предмете. По умолчанию выключены.
+# EN: Milestone rewards belong to each individual item. Disabled by default.
+# RU: Порог задаётся ключом; для дробного числа используйте _, например '100_5' = 100.5.
+# EN: The key defines the threshold; use _ for decimals, for example '100_5' = 100.5.
+# RU: console: — выполнить от консоли; player: — от игрока, с его правами. Слеш не нужен.
+# EN: console: — run as console; player: — run as the player with their permissions. No leading slash.
+# RU: {player} — ник игрока, достигшего порога. Каждый порог срабатывает один раз для предмета.
+# EN: {player} — name of the player reaching the threshold. Each threshold triggers once per item.
+# RU: Пример: замените kills: {} ниже этим блоком, чтобы выдавать алмаз за 100 убийств:
+# EN: Example: replace kills: {} below with this block to give one diamond for 100 kills:
+#   kills:
+#     '100':
+#       commands:
+#         - 'console:minecraft:give {player} diamond 1'
+# RU: Пример для брони: замените damage: {} блоком ниже, чтобы выдать 2 алмаза за 100.5 ❤:
+# EN: Armor example: replace damage: {} below with this block to give two diamonds for 100.5 ❤:
+#   damage:
+#     '100_5':
+#       commands:
+#         - 'console:minecraft:give {player} diamond 2'
+# RU: trigger-on-admin-change — выдавать награды и при изменении значений командой администратора.
+# EN: trigger-on-admin-change — also grant rewards when an admin command changes the counters.
+milestones:
+  trigger-on-admin-change: false
+  blocks: {}
+  wood: {}
+  kills: {}
+  damage: {}
+# RU: Подключение к PlaceholderAPI, если он установлен. Изменение enabled требует перезапуска.
+# EN: Integrate with PlaceholderAPI if installed. Changing enabled requires a server restart.
+placeholderapi:
+  enabled: true
+  empty-item: '0'

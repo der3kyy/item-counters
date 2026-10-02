@@ -1,0 +1,119 @@
+# Ответы команд. {player} — ник, {usage} — строка из раздела usage ниже.
+messages:
+  no-permission: "\n &cУ вас нет прав на эту команду!\n"
+  syntax: "\n &cНеверная команда! &fИспользуйте /counter help.\n"
+  player-required: "\n &cДля команды из консоли укажите ник игрока! &f{usage}\n"
+  player-not-found: "\n &cИгрок &f{player} &cне найден в сети!\n"
+  missing-player: "\n &cУкажите ник игрока! &f{usage}\n"
+  missing-stat: "\n &cУкажите характеристику счётчика! &f{usage}\n"
+  missing-value: "\n &cУкажите числовое значение! &f{usage}\n"
+  missing-category: "\n &cУкажите категорию рейтинга! &f{usage}\n"
+  missing-period: "\n &cУкажите период рейтинга! &f{usage}\n"
+  invalid-arguments: "\n &cНеверные аргументы команды! &f{usage}\n"
+  invalid-category: "\n &cНеизвестная категория рейтинга! &f{usage}\n"
+  invalid-period: "\n &cНеизвестный период рейтинга! &f{usage}\n"
+  inventory-full: "\n &cВ инвентаре игрока &f{player} &cнет места для счётчика!\n"
+  given: "\n &3Игроку &f{player} &3выдан счётчик.\n"
+  received: "\n &3Вы получили счётчик. &fНаложите его на инструмент, оружие или броню через наковальню.\n"
+  unsupported: "\n &cЭтот предмет не поддерживается! &fВозьмите один подходящий предмет в основную руку.\n"
+  already-counted: "\n &cНа предмете уже есть счётчик!\n"
+  no-counter: "\n &cНа предмете нет счётчика!\n"
+  applied: "\n &3Счётчик добавлен на предмет игрока &f{player}&3.\n"
+  removed: "\n &3Счётчик удалён с предмета игрока &f{player}&3.\n"
+  edited: "\n &3Счётчик игрока &f{player} &3изменён. Значение: &f{value}&3.\n"
+  invalid-stat-value: "\n &cНеверная характеристика или число! &fЗначение должно быть неотрицательным; total_kills вычисляется автоматически.\n"
+  invalid-page: "\n &cНеверный номер страницы!\n"
+  reloaded: "\n &3Настройки перечитаны. &7(Файл хранения, периоды, интервалы и подключение PAPI меняются после перезапуска)\n"
+  reload-failed: "\n &cНе удалось перечитать настройки! &fПодробности в консоли; прежние настройки сохранены.\n"
+# Эти строки показываются рядом с ошибкой аргументов. <...> — обязательно, [...] — по желанию.
+# В командах с [player] игрок может не указывать ник: используется предмет в его руке.
+# При выполнении из консоли ник обязателен. Названия команд при переводе не меняйте.
+usage:
+  help: '/counter help'
+  give: '/counter give <ник>'
+  apply: '/counter apply [ник]'
+  remove: '/counter remove [ник]'
+  inspect: '/counter inspect [ник]'
+  set: '/counter set <характеристика> <значение> [ник]'
+  add: '/counter add <характеристика> <значение> [ник]'
+  subtract: '/counter subtract <характеристика> <значение> [ник]'
+  top: '/counter top <blocks|wood|kills|damage> <daily|weekly|alltime> [страница]'
+  reload: '/counter reload'
+# Название и описание предмета, выдаваемого через /counter give.
+# Его материал задаётся в config.yml: anvil.counter-material.
+counter-item:
+  name: '&3Счётчик'
+  lore:
+    - '&fДля инструмента, оружия или брони.'
+    - '&7Наложение через наковальню.'
+# Справка /counter help. admin виден обладателям itemcounters.admin.
+help:
+  header: '&3Счётчики предметов'
+  public:
+    - '&f/counter help &7— справка'
+    - '&f/counter top <blocks|wood|kills|damage> <daily|weekly|alltime> [page] &7— рейтинг'
+  admin:
+    - '&f/counter give <ник> &7— выдать предмет счётчика'
+    - '&f/counter apply [player] &7— добавить счётчик'
+    - '&f/counter remove [player] &7— удалить счётчик'
+    - '&f/counter inspect [player] &7— посмотреть данные предмета'
+    - '&f/counter set|add|subtract <stat> <value> [player] &7— изменить данные'
+    - '&f/counter reload &7— перечитать настройки'
+# Подписи в описании предмета: {label}, {mob_label}, {player_label} в config.yml → display.
+# kills — общее число убийств; mob_kills и player_kills — отдельные счётчики оружия.
+# labels.kills используется, если вы добавите {label} в display.kills.lore.
+labels:
+  blocks: Сломано блоков
+  wood: Сломано дерева
+  kills: Убийства
+  mob_kills: Убито мобов
+  player_kills: Убито игроков
+  damage: Получено урона
+# Единицы после числа в рейтингах /counter top и плейсхолдере рейтинга ..._value.
+# Например, labels.blocks даёт «Сломано блоков: 100» на предмете,
+# а units.blocks даёт «100 блоков» в рейтинге. Урон измеряется в сердцах: 1 ❤ = 2 HP.
+units:
+  blocks: блоков
+  wood: блоков дерева
+  kills: убийств
+  damage: ❤ урона
+# Названия категорий в заголовке /counter top; на описание предмета не влияют.
+categories:
+  blocks: Сломанные блоки
+  wood: Дерево
+  kills: Убийства
+  damage: Полученный урон
+# Названия периодов в заголовке рейтинга. Границы зависят от leaderboards в config.yml.
+periods:
+  daily: сегодня
+  weekly: эта неделя
+  alltime: всё время
+# Оформление /counter top. value также используется плейсхолдером рейтинга ..._value.
+# row: {position}, {player}, {value}; value: {value} (число), {unit} (единица из units).
+leaderboard:
+  header: '&3{category} &7— {period}, страница {page}'
+  row: '&3{position}. &f{player} &7— &f{value}'
+  value: '{value} {unit}'
+  empty: '&7В этой части рейтинга пока никого нет.'
+# Строки /counter inspect для предмета в основной руке выбранного игрока.
+# {id} — UUID предмета, {type} — категория; {value} — основное значение счётчика.
+# Для оружия доступны {mob_kills}, {player_kills}, {total_kills}; для брони — {damage} в сердцах.
+inspect:
+  blocks:
+    - '&3Предмет игрока &f{player}&3: &f{type}'
+    - '&3Сломано блоков: &f{value}'
+    - '&7UUID предмета: {id}'
+  wood:
+    - '&3Предмет игрока &f{player}&3: &f{type}'
+    - '&3Сломано дерева: &f{value}'
+    - '&7UUID предмета: {id}'
+  kills:
+    - '&3Предмет игрока &f{player}&3: &f{type}'
+    - '&3Убито мобов: &f{mob_kills}'
+    - '&3Убито игроков: &f{player_kills}'
+    - '&3Всего убийств: &f{total_kills}'
+    - '&7UUID предмета: {id}'
+  damage:
+    - '&3Предмет игрока &f{player}&3: &f{type}'
+    - '&3Получено урона: &f{damage} ❤'
+    - '&7UUID предмета: {id}'

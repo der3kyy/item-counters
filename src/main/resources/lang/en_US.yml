@@ -1,0 +1,190 @@
+# Command replies. {player} is the player's name; {usage} comes from usage below.
+messages:
+  no-permission: "&cYou do not have permission to use this command!"
+  syntax: "&cInvalid command! &6Use /counter help."
+  player-required: "&cSpecify a player when running this command from the console! &6{usage}"
+  player-not-found: "&cPlayer &6{player} &cis not online!"
+  missing-player: "&cSpecify a player! &6{usage}"
+  missing-stat: "&cSpecify the counter stat! &6{usage}"
+  missing-value: "&cSpecify a numeric value! &6{usage}"
+  missing-category: "&cSpecify the leaderboard category! &6{usage}"
+  missing-period: "&cSpecify the leaderboard period! &6{usage}"
+  invalid-arguments: "&cInvalid command arguments! &6{usage}"
+  invalid-category: "&cUnknown leaderboard category! &6{usage}"
+  invalid-period: "&cUnknown leaderboard period! &6{usage}"
+  inventory-full: "&cThere is no room for a counter in &6{player}&c's inventory!"
+  given: "&eGave a counter to &6{player}&e."
+  received: "&eYou received a counter. &6Apply it to a tool, weapon or armor in an anvil."
+  unsupported: "&cThis item is not supported! &6Hold one supported item in your main hand."
+  already-counted: "&cThis item already has a counter!"
+  no-counter: "&cThis item has no counter!"
+  applied: "&eApplied a counter to &6{player}&e's item."
+  removed: "&eRemoved the counter from &6{player}&e's item."
+  edited: "&eUpdated &6{player}&e's counter. Value: &6{value}&e."
+  invalid-stat-value: "&cInvalid stat or number! &6Values must be nonnegative; total_kills is calculated automatically."
+  invalid-page: "&cInvalid page number!"
+  reloaded: "&eSettings reloaded. &7(Storage file, periods, intervals and PAPI registration require a restart)"
+  reload-failed: "&cSettings reload failed! &6Check the console; previous settings are still active."
+# Argument hints: <...> is required; [...] is optional.
+# Item commands without [player] use the sender's main hand. Console use requires a player.
+# Do not translate command names.
+usage:
+  help: '/counter help'
+  give: '/counter give <player>'
+  apply: '/counter apply [player]'
+  remove: '/counter remove [player]'
+  inspect: '/counter inspect [player]'
+  set: '/counter set <stat> <value> [player]'
+  add: '/counter add <stat> <value> [player]'
+  subtract: '/counter subtract <stat> <value> [player]'
+  top: '/counter top <category> <daily|weekly|alltime> [page]'
+  reload: '/counter reload'
+# Appearance of the item issued by /counter give. Material: config.yml → anvil.counter-material.
+counter-item:
+  name: '&6Counter'
+  lore:
+    - '&eFor a tool, weapon or armor.'
+    - '&7Apply in an anvil.'
+# /counter help. The admin section requires itemcounters.admin.
+help:
+  header: '&6Item counters'
+  public:
+    - '&6/counter help &e— help'
+    - '&6/counter top <category> <daily|weekly|alltime> [page] &e— leaderboard'
+  admin:
+    - '&6/counter give <player> &e— give a counter item'
+    - '&6/counter apply [player] &e— apply a counter'
+    - '&6/counter remove [player] &e— remove a counter'
+    - '&6/counter inspect [player] &e— inspect item data'
+    - '&6/counter set|add|subtract <stat> <value> [player] &e— edit counters'
+    - '&6/counter reload &e— reload settings'
+# Units after the value in rankings and PAPI ..._value; tool names are part of these phrases.
+# RU: Формы слов: one — 1; few — 2–4; many — 0/5–20; other — дробные числа.
+# EN: Word forms: one — 1; few — 2–4; many — 0/5–20; other — fractional numbers.
+# RU: russian учитывает последние цифры и 11–14; english использует one/other.
+# EN: russian handles final digits and 11–14; english uses one/other.
+# RU: {block_word}, {kill_word} и другие {имя_word} выбираются по отображаемому числу.
+# EN: {block_word}, {kill_word} and other {name_word} follow the displayed number.
+forms:
+  rule: english
+  block:
+    one: block
+    few: blocks
+    many: blocks
+    other: blocks
+  kill:
+    one: kill
+    few: kills
+    many: kills
+    other: kills
+  mob:
+    one: mob
+    few: mobs
+    many: mobs
+    other: mobs
+  player:
+    one: player
+    few: players
+    many: players
+    other: players
+  heart:
+    one: heart
+    few: hearts
+    many: hearts
+    other: hearts
+# RU: units — полные подписи; добавляйте формы через {имя_word}.
+# EN: units — complete labels; insert word forms using {name_word}.
+units:
+  blocks: '{block_word}'
+  wood: 'axe {block_word}'
+  kills: '{kill_word}'
+  damage: '❤ damage'
+  pickaxe: '{block_word} with a pickaxe'
+  shovel: '{block_word} with a shovel'
+  hoe: '{block_word} with a hoe'
+  axe: '{block_word} with an axe'
+  sword: 'sword {kill_word}'
+  mace: 'mace {kill_word}'
+  bow: 'bow {kill_word}'
+  crossbow: 'crossbow {kill_word}'
+  trident: 'trident {kill_word}'
+  armor: '❤ damage while armored'
+# Category names in /counter top headers; these do not change item lore.
+categories:
+  blocks: Blocks broken
+  wood: Axes
+  kills: Kills
+  damage: Health lost
+  pickaxe: 'Pickaxes'
+  shovel: 'Shovels'
+  hoe: 'Hoes'
+  axe: 'Axes'
+  sword: 'Swords'
+  mace: 'Maces'
+  bow: 'Bows'
+  crossbow: 'Crossbows'
+  trident: 'Tridents'
+  armor: 'Armor'
+  mixed: 'Mixed top'
+# Period names in leaderboard headers; boundaries are configured under leaderboards in config.yml.
+periods:
+  daily: today
+  weekly: this week
+  alltime: all time
+# /counter top format. value also formats leaderboard ..._value placeholders.
+# row: {position}, {player}, {value}; value: {value} (number), {unit} (from units).
+leaderboard:
+  header: '&6{category} &7— {period}, page {page}'
+  row: '&6{position}. &e{player} &7— &6{value}'
+  value: '{value} {unit}'
+  empty: '&7There are no players on this leaderboard page yet.'
+# /counter inspect lines for the target player's main-hand item.
+# {id} is the item's UUID; {type} is its category; {value} is its primary count.
+# Weapons: {mob_kills}, {player_kills}, {total_kills}. Armor: {damage} in hearts.
+inspect:
+  blocks:
+    - '&eItem held by &6{player}&e: &6{type}'
+    - '&eBlocks broken: &6{value}'
+    - '&7Item UUID: {id}'
+  wood:
+    - '&eItem held by &6{player}&e: &6{type}'
+    - '&eWood broken: &6{value}'
+    - '&7Item UUID: {id}'
+  kills:
+    - '&eItem held by &6{player}&e: &6{type}'
+    - '&eMobs killed: &6{mob_kills}'
+    - '&ePlayers killed: &6{player_kills}'
+    - '&eTotal kills: &6{total_kills}'
+    - '&7Item UUID: {id}'
+  damage:
+    - '&eItem held by &6{player}&e: &6{type}'
+    - '&eHealth lost: &6{damage} ❤'
+    - '&7Item UUID: {id}'
+# Lore of a counted item. Edit the complete phrases here.
+# {value}: blocks; {mob_kills}/{player_kills}: kills; {damage}: hearts. Use &o for italics.
+item-lore:
+  pickaxe:
+    - '&eBlocks broken (pickaxe): &6{value}'
+  shovel:
+    - '&eBlocks broken (shovel): &6{value}'
+  hoe:
+    - '&eBlocks broken (hoe): &6{value}'
+  axe:
+    - '&eBlocks broken (axe): &6{value}'
+  sword:
+    - '&eMobs killed: &6{mob_kills}'
+    - '&ePlayers killed: &6{player_kills}'
+  mace:
+    - '&eMobs killed: &6{mob_kills}'
+    - '&ePlayers killed: &6{player_kills}'
+  bow:
+    - '&eMobs killed: &6{mob_kills}'
+    - '&ePlayers killed: &6{player_kills}'
+  crossbow:
+    - '&eMobs killed: &6{mob_kills}'
+    - '&ePlayers killed: &6{player_kills}'
+  trident:
+    - '&eMobs killed: &6{mob_kills}'
+    - '&ePlayers killed: &6{player_kills}'
+  armor:
+    - '&eDamage taken: &6{damage} ❤'

@@ -1,0 +1,36 @@
+name: ItemCounters
+main: itemcounters.ItemCountersPlugin
+version: '${version}'
+api-version: '1.21.10'
+description: Persistent item counters, player leaderboards and milestones
+softdepend: [PlaceholderAPI]
+commands:
+  counter:
+    description: Manage item counters and view leaderboards
+    usage: /counter help
+permissions:
+  itemcounters.use:
+    default: true
+  itemcounters.top:
+    default: true
+  itemcounters.admin:
+    default: op
+    children:
+      itemcounters.admin.apply: true
+      itemcounters.admin.give: true
+      itemcounters.admin.remove: true
+      itemcounters.admin.edit: true
+      itemcounters.admin.inspect: true
+      itemcounters.admin.reload: true
+  itemcounters.admin.apply:
+    default: op
+  itemcounters.admin.give:
+    default: op
+  itemcounters.admin.remove:
+    default: op
+  itemcounters.admin.edit:
+    default: op
+  itemcounters.admin.inspect:
+    default: op
+  itemcounters.admin.reload:
+    default: op

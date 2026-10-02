@@ -1,0 +1,18 @@
+display:
+  blocks:
+    lore:
+    - ''
+    - '&3{label}: &f{value}'
+  wood:
+    lore:
+    - ''
+    - '&3{label}: &f{value}'
+  kills:
+    lore:
+    - ''
+    - '&3{mob_label}: &f{mob_kills}'
+    - '&3{player_label}: &f{player_kills}'
+  damage:
+    lore:
+    - ''
+    - '&3{label}: &f{damage} ❤'

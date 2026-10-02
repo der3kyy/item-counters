@@ -1,0 +1,128 @@
+ItemCounters License 1.0
+Copyright (c) 2026 der3kyy. All rights reserved except as expressly granted below.
+
+This is a custom source-available license, not the GNU GPL, LGPL, MIT license,
+or an open-source license. The English text below is authoritative; the Russian
+summary is provided for convenience.
+
+1. Scope
+"Software" means the original ItemCounters code, configuration templates and
+documentation owned by der3kyy, including modified versions of those materials.
+It excludes third-party components identified in the third-party notices below and
+other files carrying their own license notices.
+
+2. Permitted use
+You may download, install and run the Software on Minecraft servers that you
+own or administer, including public and commercial servers. Server donations,
+paid access and sales of server services are permitted; selling a copy of the
+Software itself is not.
+
+You may inspect the source, compile it, make backup copies, transfer it between
+your own servers, and modify it for your own use. Copies may be provided
+privately to your staff or hosting provider solely to administer your servers,
+subject to these same terms and without further redistribution.
+
+3. Restrictions
+Without prior written permission from der3kyy, you may not:
+- sell, resell, rent, sublicense or otherwise charge for copies of the Software;
+- redistribute, reupload, publish or bundle the Software or modified versions
+  as a separate plugin, download, paid package or other software distribution;
+- incorporate its original code into another distributed product;
+- remove applicable copyright or license notices, claim another person's
+  authorship, or present an unofficial version as an official release.
+
+Linking to an official repository or download is permitted. GitHub's own
+permissions for viewing and forking a public repository remain applicable;
+a GitHub fork does not grant permission to sell or otherwise redistribute
+the Software outside the permissions stated here.
+
+4. Third-party rights
+These restrictions do not limit rights granted by third-party licenses.
+In particular, modification of the combined work for your own use, replacement
+or relinking of LGPL-covered libraries, and reverse engineering to debug such
+modifications are permitted. Third-party components may be used, modified and
+redistributed under their respective licenses independently of this license.
+See the third-party notices below for licenses, sources and replacement instructions.
+
+5. No warranty
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTIES OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. TO THE EXTENT PERMITTED BY APPLICABLE LAW, THE COPYRIGHT
+HOLDERS ARE NOT LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY ARISING FROM
+THE SOFTWARE OR ITS USE.
+
+6. Termination and permissions
+A material violation ends the permissions granted by this license. Permissions
+required by applicable law and rights under third-party licenses are unaffected.
+For additional permissions contact der3kyy through:
+https://github.com/der3kyy/item-counters/issues
+
+Краткое пояснение на русском
+Можно бесплатно устанавливать плагин на свои серверы, в том числе коммерческие,
+читать и собирать исходники, делать резервные копии и менять код для своего
+использования. Можно передать копию своему персоналу или хостингу для обслуживания
+своих серверов. Донаты и монетизация самого Minecraft-сервера разрешены.
+
+Без письменного разрешения der3kyy нельзя продавать или перепродавать плагин,
+выкладывать его копии и изменённые версии, включать его код в распространяемые
+продукты или выдавать чужую работу за свою. Можно делиться официальной ссылкой.
+Форки на GitHub доступны в рамках правил GitHub, но не дают права перепродажи.
+
+Лицензии сторонних библиотек остаются в силе. Эта лицензия не ограничивает
+предоставленные ими права; локальные изменения, замена LGPL-библиотеки и
+обратная разработка для отладки таких изменений разрешены. Плагин предоставляется
+без гарантий. Полные условия изложены в английской части выше.
+
+
+Third-party notices
+
+The ItemCounters custom license applies only to its original code and materials.
+It does not relicense or restrict the independent components below.
+
+| Bundled component | Version | License and attribution |
+| --- | --- | --- |
+| SQLite JDBC | 3.50.3.0 | Apache-2.0; Xerial contributors; retained BSD-2-Clause notice for David Crawshaw / Zentus code |
+| MariaDB Connector/J | 3.5.6 | LGPL-2.1-or-later; MariaDB Corporation Ab and contributors |
+
+## License texts
+
+- `third-party/licenses/mariadb-LGPL-2.1.txt`: unchanged upstream license.
+- `third-party/licenses/sqlite-Apache-2.0.txt`: unchanged upstream license.
+- `third-party/licenses/sqlite-LICENSE.zentus`: unchanged upstream BSD notice.
+- `third-party/licenses/sqlite-NOTICE`: unchanged upstream attribution notice.
+
+The deployment JAR includes these files under `META-INF/item-counters/third-party/`,
+and the ItemCounters LICENSE, including these notices, under `META-INF/item-counters/`.
+Existing SQLite license files inside the dependency are preserved.
+
+## MariaDB corresponding source and replacing the library
+
+The unmodified matching source archive is available from Maven Central:
+[MariaDB Connector/J 3.5.6 sources](https://repo.maven.apache.org/maven2/org/mariadb/jdbc/mariadb-java-client/3.5.6/mariadb-java-client-3.5.6-sources.jar).
+It contains the driver source and Maven build definition. Upstream source:
+https://github.com/mariadb-corporation/mariadb-connector-j/tree/3.5.6
+
+The driver is not modified or relocated in the deployment JAR. ItemCounters
+source is available in `src/main/java/`, and its component build definition is
+`build.gradle.kts`. For local replacement, select the compatible driver in `build.gradle.kts`
+and rebuild `jar` with Java 21 / Gradle 8.14.3.
+For a locally modified Connector/J driver, build/install its Maven artifact and
+use that artifact in the component build instead of the original Maven dependency.
+Keep one driver version in the resulting JAR. Local modification, relinking and
+reverse engineering to debug modifications are expressly allowed by the
+ItemCounters license. Redistribution of the library itself remains governed
+by LGPL, rather than by ItemCounters' resale restrictions.
+
+## SQLite source
+
+https://github.com/xerial/sqlite-jdbc/tree/3.50.3.0
+
+Packaging retains the original x86_64/aarch64 native binaries and removes other
+native targets. Driver Java classes are unchanged.
+
+## External dependencies
+
+Purpur/Paper API and PlaceholderAPI are compile-only and are not bundled.
+PlaceholderAPI is optional at runtime and is installed separately by the server
+administrator. Gson is provided by the Minecraft server for legacy JSON import.
+JUnit is test tooling, not part of the plugin JAR.
