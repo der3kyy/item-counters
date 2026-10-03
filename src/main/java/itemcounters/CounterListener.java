@@ -44,7 +44,6 @@ public final class CounterListener implements Listener {
         if (snapshot.type() != CounterType.BLOCKS && !wood) return;
         String stat = wood ? "wood" : "blocks";
         counters.edit(item, stat, 1L, "add", player.getUniqueId(), player.getName(), false);
-        player.getInventory().setItemInMainHand(item);
         plugin.credit(player, stat, 1L);
         if (wood) plugin.credit(player, "blocks", 1L);
         plugin.credit(player, ToolCategory.classify(item.getType().name()), 1L);
@@ -65,14 +64,14 @@ public final class CounterListener implements Listener {
         CounterSnapshot snapshot = counters.getCounter(event.getBow());
         source(event.getProjectile().getPersistentDataContainer(), counters.enabled(snapshot) && snapshot.type() == CounterType.WEAPON ? snapshot.id() : null,
                 player.getUniqueId(), event.getBow() == null ? null : ToolCategory.classify(event.getBow().getType().name()));
-        locations.inventory(player.getInventory());
+        next(() -> { if (player.isOnline()) locations.inventory(player.getInventory()); });
     }
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void launch(ProjectileLaunchEvent event) {
         if (!(event.getEntity() instanceof Trident trident) || !(trident.getShooter() instanceof Player player) || !counts(player)) return;
         CounterSnapshot snapshot = counters.getCounter(trident.getItemStack());
         source(trident.getPersistentDataContainer(), counters.enabled(snapshot) ? snapshot.id() : null, player.getUniqueId(), "trident");
-        locations.trident(trident);
+        next(() -> { if (trident.isValid()) locations.trident(trident); });
     }
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void hit(EntityDamageEvent event) {
@@ -89,12 +88,12 @@ public final class CounterListener implements Listener {
                         String owner = projectile.getPersistentDataContainer().get(actor, PersistentDataType.STRING);
                         if (player.getUniqueId().toString().equals(owner)) sourceWeapon = parse(id);
                         category = projectile.getPersistentDataContainer().get(sourceCategory, PersistentDataType.STRING);
-                        if (projectile instanceof Trident trident) locations.trident(trident);
+                        if (projectile instanceof Trident trident) next(() -> { if (trident.isValid()) locations.trident(trident); });
                     } else {
                         CounterSnapshot held = counters.getCounter(player.getInventory().getItemInMainHand());
                         if (counters.enabled(held) && held.type() == CounterType.WEAPON) sourceWeapon = held.id();
                         category = ToolCategory.classify(player.getInventory().getItemInMainHand().getType().name());
-                        locations.inventory(player.getInventory());
+                        if (sourceWeapon != null) next(() -> { if (player.isOnline()) locations.inventory(player.getInventory()); });
                     }
                 }
                 source(victim.getPersistentDataContainer(), sourceWeapon, player.getUniqueId(), category);
@@ -113,7 +112,6 @@ public final class CounterListener implements Listener {
         double[] shares = CounterMath.distribute(damage, slots.size());
         for (int index = 0; index < slots.size(); index++)
             counters.edit(armor[slots.get(index)], "damage", shares[index], "add", player.getUniqueId(), player.getName(), false);
-        player.getInventory().setArmorContents(armor);
         plugin.credit(player, "damage", damage);
         plugin.credit(player, "armor", damage);
     }
@@ -127,7 +125,7 @@ public final class CounterListener implements Listener {
         if (id == null || !killer.getUniqueId().toString().equals(owner)) return;
         String stat = victim instanceof Player ? "player_kills" : "mob_kills";
         plugin.ledger().enqueue(id, killer.getUniqueId(), killer.getName(), stat);
-        locations.resolve(id, killer);
+        next(() -> locations.resolve(id, killer));
         plugin.credit(killer, "kills", 1L);
         String category = victim.getPersistentDataContainer().get(sourceCategory, PersistentDataType.STRING);
         if (category != null && ToolCategory.TOOLS.contains(category)) plugin.credit(killer, category, 1L);
