@@ -24,7 +24,6 @@ public final class ItemLocations {
             touch(item, new Location(() -> reference.get() == null ? null : reference.get().getItem(index),
                     updated -> { if (reference.get() != null) reference.get().setItem(index, updated); },
                     () -> reference.get() != null && (!(reference.get().getHolder() instanceof Player player) || player.isOnline())), 0);
-            if (item != null) inventory.setItem(index, item);
         }
     }
     public void entity(Item entity) {
