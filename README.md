@@ -6,6 +6,12 @@ Counters for tools, weapons and armor. Track broken blocks, mob and player kills
 
 **Requirements:** Minecraft 1.21.10, Paper/Purpur, Java 21. PlaceholderAPI is optional.
 
+## What's new in 1.0.1
+
+Fixed a durability bug where ItemCounters could replace an item stack while Minecraft was still processing vanilla damage or item use. Because of this, swords and armor could sometimes avoid losing durability, even when the item itself had no counter.
+
+In 1.0.1, unsafe stack replacements were removed or deferred until after vanilla processing, so normal durability loss now works correctly.
+
 ## Installation and use
 
 Put the plugin JAR in `plugins/` and start the server. Settings are created in `plugins/ItemCounters/config.yml`, with translations in `plugins/ItemCounters/lang/`.
